@@ -1,1 +1,13 @@
 /* Example */
+
+.stream-layout {
+    height: 100%;
+}
+
+.stream-header {
+    height: 10%;
+}
+
+.stream-panel {
+    height: 90%;
+}
