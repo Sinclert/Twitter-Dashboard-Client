@@ -4,11 +4,11 @@ import React, { Component } from "react";
 import { Segment } from "semantic-ui-react";
 
 
-export default class Header extends Component {
+export default class StreamSidebar extends Component {
 
     render() {
         return (
-            <Segment>Header</Segment>
+            <Segment>Sidebar</Segment>
         );
     }
 }
