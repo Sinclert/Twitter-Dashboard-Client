@@ -16,6 +16,16 @@
 }
 
 
+.details-list {
+    width: 100%;
+    height: 40px;
+}
+
+.details-item {
+    width: 32%;
+}
+
+
 .panel-layout {
     height: 100%;
 }
