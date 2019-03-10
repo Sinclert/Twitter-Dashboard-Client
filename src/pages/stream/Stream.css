@@ -1,13 +1,18 @@
+/* encoding: utf-8 */
+
 .stream-layout {
     height: 100%;
 }
 
 .stream-header {
     height: 10%;
+    min-height: 60px;
+    min-width: 900px;
 }
 
 .stream-body {
     height: 90%;
+    min-width: 900px;
 }
 
 
@@ -17,6 +22,7 @@
 
 .panel-header {
     height: 10%;
+    min-height: 60px;
 }
 
 .panel-body {

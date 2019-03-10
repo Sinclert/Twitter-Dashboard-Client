@@ -5,7 +5,7 @@ import StreamPanel from "./components/StreamPanel";
 import StreamSidebar from "./components/StreamSidebar";
 import React, { Component } from "react";
 import { Grid } from "semantic-ui-react";
-import './Stream.css';
+import "./Stream.css";
 
 
 export default class Stream extends Component {
@@ -19,10 +19,10 @@ export default class Stream extends Component {
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row stretched className="stream-body">
-                    <Grid.Column width={3}>
+                    <Grid.Column width={2}>
                         <StreamSidebar/>
                     </Grid.Column>
-                    <Grid.Column width={13}>
+                    <Grid.Column width={14}>
                         <StreamPanel/>
                     </Grid.Column>
                 </Grid.Row>
