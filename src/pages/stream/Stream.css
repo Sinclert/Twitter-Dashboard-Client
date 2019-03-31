@@ -26,6 +26,11 @@
 }
 
 
+.sidebar-tab {
+    cursor: pointer;
+}
+
+
 .panel-layout {
     height: 100%;
 }
