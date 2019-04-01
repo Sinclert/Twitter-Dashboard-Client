@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "chart.js": "latest",
     "leaflet": "^1.4.0",
     "react": "^16.8.2",
+    "react-chartjs-2": "latest",
     "react-dom": "^16.8.2",
     "react-leaflet": "^2.2.1",
     "react-scripts": "2.1.5",
