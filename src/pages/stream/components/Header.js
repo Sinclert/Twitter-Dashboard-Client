@@ -8,7 +8,7 @@ export default class Header extends Component {
 
     render() {
         return (
-            <Segment>Header</Segment>
+            <Segment>TwitterDashboards</Segment>
         );
     }
 }

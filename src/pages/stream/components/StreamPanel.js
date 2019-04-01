@@ -56,13 +56,13 @@ export default class StreamPanel extends Component {
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row stretched className="panel-body">
-                    <Grid.Column width={1}>
+                    <Grid.Column width={1} className="panel-body-sidebar">
                         <StreamSidebar
                             setMapTab={this.setMapTab}
                             setGraphsTab={this.setGraphsTab}
                         />
                     </Grid.Column>
-                    <Grid.Column width={15}>
+                    <Grid.Column width={15} className="panel-body-main">
                         { this.renderTab() }
                     </Grid.Column>
                 </Grid.Row>

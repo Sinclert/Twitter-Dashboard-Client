@@ -12,14 +12,14 @@ export default class StreamSidebar extends Component {
         const { setGraphsTab, setMapTab } = this.props;
 
         return (
-            <Segment>
+            <Segment textAlign="center">
                 <List relaxed="very">
-                    <List.Item className="sidebar-tab" onClick={setMapTab}>
+                    <List.Item className="panel-body-sidebar-tab" onClick={setMapTab}>
                         <Image avatar size="big">
                             <Icon circular inverted color="blue" name="map"/>
                         </Image>
                     </List.Item>
-                    <List.Item className="sidebar-tab" onClick={setGraphsTab}>
+                    <List.Item className="panel-body-sidebar-tab" onClick={setGraphsTab}>
                         <Image avatar size="big">
                             <Icon circular inverted color="blue" name="pie graph"/>
                         </Image>

@@ -5,13 +5,14 @@
 }
 
 .stream-header {
-    height: 10%;
+    height: 5%;
     min-height: 60px;
     min-width: 900px;
+    padding-bottom: 0;
 }
 
 .stream-body {
-    height: 90%;
+    height: 95%;
     min-width: 900px;
 }
 
@@ -26,20 +27,29 @@
 }
 
 
-.sidebar-tab {
-    cursor: pointer;
-}
-
-
 .panel-layout {
     height: 100%;
 }
 
 .panel-header {
     height: 10%;
-    min-height: 60px;
+    min-height: 80px;
 }
 
 .panel-body {
     height: 90%;
+}
+
+
+.panel-body-sidebar {
+    min-width: 100px;
+}
+
+.panel-body-main {
+    max-width: calc(100% - 100px);
+}
+
+
+.panel-body-sidebar-tab {
+    cursor: pointer;
 }
