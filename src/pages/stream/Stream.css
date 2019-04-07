@@ -26,6 +26,10 @@
     width: 32%;
 }
 
+.details-item-content {
+    font-size: 14px;
+}
+
 
 .panel-layout {
     height: 100%;

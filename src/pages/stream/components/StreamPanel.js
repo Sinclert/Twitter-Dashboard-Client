@@ -14,10 +14,10 @@ export default class StreamPanel extends Component {
         super(props);
         this.state = {
             chosenTab: "map",
-            stream: {
-                filter: "",
-                location: "",
-                numResults: "",
+            streamProps: {
+                filter: "Everything",
+                location: "San Francisco",
+                numResults: "50",
             }
         };
 
@@ -50,11 +50,13 @@ export default class StreamPanel extends Component {
     render() {
         return (
             <Grid className="panel-layout">
+
                 <Grid.Row stretched className="panel-header">
                     <Grid.Column width={16}>
-                        <StreamDetails/>
+                        <StreamDetails streamProps={this.state.streamProps}/>
                     </Grid.Column>
                 </Grid.Row>
+
                 <Grid.Row stretched className="panel-body">
                     <Grid.Column width={1} className="panel-body-sidebar">
                         <StreamSidebar
@@ -66,6 +68,7 @@ export default class StreamPanel extends Component {
                         { this.renderTab() }
                     </Grid.Column>
                 </Grid.Row>
+
             </Grid>
         );
     }
