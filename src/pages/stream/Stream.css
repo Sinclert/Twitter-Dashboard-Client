@@ -52,8 +52,3 @@
 .panel-body-main {
     max-width: calc(100% - 100px);
 }
-
-
-.panel-body-sidebar-tab {
-    cursor: pointer;
-}

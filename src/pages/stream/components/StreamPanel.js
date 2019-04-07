@@ -14,7 +14,7 @@ export default class StreamPanel extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            chosenTab: null,
+            chosenTab: "map",
             streamProps: {
                 filter: "Everything",
                 location: "San Francisco",
@@ -108,6 +108,7 @@ export default class StreamPanel extends Component {
                 <Grid.Row stretched className="panel-body">
                     <Grid.Column width={1} className="panel-body-sidebar">
                         <StreamSidebar
+                            chosenTab={this.state.chosenTab}
                             setMapTab={this.setMapTab}
                             setGraphsTab={this.setGraphsTab}
                         />
