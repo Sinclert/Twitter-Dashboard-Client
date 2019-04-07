@@ -16,7 +16,7 @@ export default class StreamPanel extends Component {
         this.state = {
             chosenTab: "map",
             streamProps: {
-                filter: "Everything",
+                filterWord: "Everything",
                 location: "San Francisco",
                 numResults: 50,
             },
@@ -43,6 +43,9 @@ export default class StreamPanel extends Component {
         // Necessary binding in order to allow children actions
         this.setGraphsTab = this.setGraphsTab.bind(this);
         this.setMapTab = this.setMapTab.bind(this);
+        this.setStreamFilterWord = this.setStreamFilterWord.bind(this);
+        this.setStreamLocation = this.setStreamLocation.bind(this);
+        this.setStreamMaxResults = this.setStreamMaxResults.bind(this);
     }
 
 
@@ -59,6 +62,33 @@ export default class StreamPanel extends Component {
 
     setGraphsTab() {
         this.setState({chosenTab: "graphs"});
+    }
+
+
+    setStreamFilterWord(filterWord) {
+        const oldStreamProps = this.state.streamProps;
+        this.setState({
+            ...oldStreamProps,
+            filterWord: filterWord
+        });
+    }
+
+
+    setStreamLocation(location) {
+        const oldStreamProps = this.state.streamProps;
+        this.setState({
+            ...oldStreamProps,
+            location: location
+        });
+    }
+
+
+    setStreamMaxResults(maxResults) {
+        const oldStreamProps = this.state.streamProps;
+        this.setState({
+            ...oldStreamProps,
+            numResults: maxResults
+        });
     }
 
 
@@ -131,7 +161,11 @@ export default class StreamPanel extends Component {
 
                 <Grid.Row stretched className="panel-header">
                     <Grid.Column width={16}>
-                        <StreamDetails streamProps={this.state.streamProps}/>
+                        <StreamDetails
+                            streamProps={this.state.streamProps}
+                            setStreamFilter={this.setStreamFilterWord}
+                            setStreamLocation={this.setStreamLocation}
+                            setStreamMaxResults={this.setStreamMaxResults}/>
                     </Grid.Column>
                 </Grid.Row>
 
