@@ -29,6 +29,10 @@
     width: 25%;
 }
 
+.dropdown {
+    z-index: 1000 !important; /* Necessary flag */
+}
+
 
 .panel-layout {
     height: 100%;

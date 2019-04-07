@@ -117,6 +117,7 @@ export default class StreamDetails extends Component {
                                         selection
                                         options={options}
                                         size="small"
+                                        className="dropdown"
                                         onChange={event => this.updateUnsavedMaxResults(event)}
                                     />
                                 </List.Item>
