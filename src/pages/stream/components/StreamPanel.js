@@ -18,7 +18,7 @@ export default class StreamPanel extends Component {
             streamProps: {
                 filter: "Everything",
                 location: "San Francisco",
-                numResults: "50",
+                numResults: 50,
             },
             streamData: {
                 android: {
@@ -46,9 +46,9 @@ export default class StreamPanel extends Component {
     }
 
 
+    // Testing adding and removing data points
     componentDidMount () {
-        // Adding a sample point to the data
-        this.addCategoryTweet({x_coords: 37.802416, y_coords: -122.399547, text: "Example"}, "android")
+        this.updateCategoryTweets({x_coords: 37.802416, y_coords: -122.399547, text: "Example"}, "android");
     }
 
 
@@ -59,6 +59,18 @@ export default class StreamPanel extends Component {
 
     setGraphsTab() {
         this.setState({chosenTab: "graphs"});
+    }
+
+
+    renderTab() {
+        switch (this.state.chosenTab) {
+            case "graphs":
+                return <StreamGraphs streamData={this.state.streamData}/>;
+            case "map":
+                return <StreamMap streamData={this.state.streamData}/>;
+            default:
+                return <StreamMap streamData={this.state.streamData}/>;
+        }
     }
 
 
@@ -83,15 +95,33 @@ export default class StreamPanel extends Component {
     }
 
 
-    renderTab() {
-        switch (this.state.chosenTab) {
-            case "graphs":
-                return <StreamGraphs streamData={this.state.streamData}/>;
-            case "map":
-                return <StreamMap streamData={this.state.streamData}/>;
-            default:
-                return <StreamMap streamData={this.state.streamData}/>;
+    removeCategoryTweet(category) {
+        const oldStreamData = this.state.streamData;
+        const oldCategoryProps = oldStreamData[category];
+        const oldCategoryTweets = oldCategoryProps.tweets;
+        oldCategoryTweets.shift();
+
+        const newCategory = {
+            ...oldCategoryProps,
+            tweets: oldCategoryTweets
+        };
+
+        const newStreamData = oldStreamData;
+        newStreamData[category] = newCategory;
+        this.setState({
+            streamData: newStreamData
+        })
+    }
+
+
+    updateCategoryTweets(tweet, category) {
+        let tweetsList = this.state.streamData[category].tweets;
+        let maxResults = this.state.streamProps.numResults;
+
+        if (tweetsList.length === maxResults) {
+            this.removeCategoryTweet(category);
         }
+        this.addCategoryTweet(tweet, category);
     }
 
 
