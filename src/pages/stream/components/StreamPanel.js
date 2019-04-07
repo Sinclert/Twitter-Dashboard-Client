@@ -10,15 +10,34 @@ import { Grid } from "semantic-ui-react";
 
 export default class StreamPanel extends Component {
 
+
     constructor(props) {
         super(props);
         this.state = {
-            chosenTab: "map",
+            chosenTab: null,
             streamProps: {
                 filter: "Everything",
                 location: "San Francisco",
                 numResults: "50",
-            }
+            },
+            streamData: {
+                android: {
+                    color: "green",
+                    tweets: [],
+                },
+                iphone: {
+                    color: "blue",
+                    tweets: [],
+                },
+                laptop: {
+                    color: "red",
+                    tweets: [],
+                },
+                other: {
+                    color: "grey",
+                    tweets: [],
+                },
+            },
         };
 
         // Necessary binding in order to allow children actions
@@ -26,23 +45,52 @@ export default class StreamPanel extends Component {
         this.setMapTab = this.setMapTab.bind(this);
     }
 
+
+    componentDidMount () {
+        // Adding a sample point to the data
+        this.addCategoryTweet({x_coords: 37.802416, y_coords: -122.399547, text: "Example"}, "android")
+    }
+
+
     setMapTab() {
         this.setState({chosenTab: "map"});
     }
+
 
     setGraphsTab() {
         this.setState({chosenTab: "graphs"});
     }
 
 
+    addCategoryTweet(tweet, category) {
+        const oldStreamData = this.state.streamData;
+        const oldCategoryProps = oldStreamData[category];
+        const oldCategoryTweets = oldCategoryProps.tweets;
+
+        const newCategory = {
+            ...oldCategoryProps,
+            tweets: [
+                ...oldCategoryTweets,
+                tweet
+            ],
+        };
+
+        const newStreamData = oldStreamData;
+        newStreamData[category] = newCategory;
+        this.setState({
+            streamData: newStreamData
+        })
+    }
+
+
     renderTab() {
         switch (this.state.chosenTab) {
             case "graphs":
-                return <StreamGraphs/>;
+                return <StreamGraphs streamData={this.state.streamData}/>;
             case "map":
-                return <StreamMap/>;
+                return <StreamMap streamData={this.state.streamData}/>;
             default:
-                return <StreamMap/>;
+                return <StreamMap streamData={this.state.streamData}/>;
         }
     }
 

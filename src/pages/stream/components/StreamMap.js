@@ -7,43 +7,31 @@ import "leaflet/dist/leaflet.css";
 
 export default class StreamMap extends Component {
 
+
     constructor(props) {
         super(props);
         this.state = {
-            center: [37.765248, -122.402676],
-            zoom: 10,
-            tweets: {
-                android: {
-                    color: "green",
-                    data: [{x_coords: 37.802416, y_coords: -122.399547, text: "Example"}],
-                },
-                iphone: {
-                    color: "blue",
-                    data: [],
-                },
-                laptop: {
-                    color: "red",
-                    data: [],
-                },
-                other: {
-                    color: "grey",
-                    data: [],
-                },
-            },
+            mapCenter: [37.765248, -122.402676],
+            mapZoom: 10,
+            markersRadius: 2,
         };
     }
+
 
     componentDidMount () {
         const map = this.refs.map.leafletElement;
         setTimeout(() => map.invalidateSize(), 0);
     }
 
+
     render() {
-        const layers = Object.keys(this.state.tweets);
+        const { streamData } = this.props;
+        const layers = Object.keys(streamData);
+        const { mapCenter, mapZoom, markersRadius } = this.state;
 
         return (
             // The "ref" prop is necessary to obtain the created instance
-            <Map center={this.state.center} zoom={this.state.zoom} ref="map">
+            <Map center={mapCenter} zoom={mapZoom} ref="map">
 
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -55,12 +43,12 @@ export default class StreamMap extends Component {
                         <LayersControl.Overlay
                             key={index}
                             name={layerName}>
-                            <FeatureGroup color="purple">
-                                {this.state.tweets[layerName].data.map((tweet, index) =>
+                            <FeatureGroup color={streamData[layerName].color}>
+                                {streamData[layerName].tweets.map((tweet, index) =>
                                     <CircleMarker
                                         key={index}
                                         center={[tweet.x_coords, tweet.y_coords]}
-                                        radius={2}>
+                                        radius={markersRadius}>
                                         <Popup>
                                             <span>{tweet.text}</span>
                                         </Popup>
