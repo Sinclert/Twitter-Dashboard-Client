@@ -163,7 +163,7 @@ export default class StreamPanel extends Component {
                     <Grid.Column width={16}>
                         <StreamDetails
                             streamProps={this.state.streamProps}
-                            setStreamFilter={this.setStreamFilterWord}
+                            setStreamFilterWord={this.setStreamFilterWord}
                             setStreamLocation={this.setStreamLocation}
                             setStreamMaxResults={this.setStreamMaxResults}/>
                     </Grid.Column>

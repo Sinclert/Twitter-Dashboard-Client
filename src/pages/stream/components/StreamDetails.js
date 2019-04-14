@@ -22,9 +22,12 @@ export default class StreamDetails extends Component {
             unsavedStreamLocation: "",
             unsavedStreamMaxResults: "",
         };
+
+        // Necessary binding in order to allow father actions
+        this.saveStreamProps = this.saveStreamProps.bind(this)
     }
 
-    // TODO: There is a bug here
+
     saveStreamProps() {
         this.props.setStreamFilterWord(this.state.unsavedStreamFilterWord);
         this.props.setStreamLocation(this.state.unsavedStreamLocation);
@@ -46,10 +49,9 @@ export default class StreamDetails extends Component {
     }
 
 
-    updateUnsavedMaxResults(event) {
-        // TODO: There is a bug here
+    updateUnsavedMaxResults(change) {
         this.setState({
-            unsavedStreamMaxResults: event.target.value
+            unsavedStreamMaxResults: change.value
         });
     }
 
@@ -118,7 +120,7 @@ export default class StreamDetails extends Component {
                                         options={options}
                                         size="small"
                                         className="dropdown"
-                                        onChange={event => this.updateUnsavedMaxResults(event)}
+                                        onChange={(event, change) => this.updateUnsavedMaxResults(change)}
                                     />
                                 </List.Item>
                             </List>
