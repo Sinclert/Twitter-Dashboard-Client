@@ -5,6 +5,7 @@
   "dependencies": {
     "chart.js": "latest",
     "leaflet": "^1.4.0",
+    "query-string": "^6.4.2",
     "react": "^16.8.2",
     "react-chartjs-2": "latest",
     "react-dom": "^16.8.2",
