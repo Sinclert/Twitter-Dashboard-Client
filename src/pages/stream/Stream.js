@@ -1,9 +1,9 @@
 /* encoding: utf-8 */
 
-import Header from "./components/Header";
-import StreamPanel from "./components/StreamPanel";
 import React, { Component } from "react";
 import { Grid } from "semantic-ui-react";
+import Header from "./components/Header";
+import StreamPanel from "./components/StreamPanel";
 import "./Stream.css";
 
 

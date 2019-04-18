@@ -1,13 +1,15 @@
+/* encoding: utf-8 */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import "semantic-ui-css/semantic.min.css";
-import Stream from './pages/stream/Stream';
+import Login from './pages/login/Login';
 import * as serviceWorker from './serviceWorker';
 
 
 ReactDOM.render(
-    <Stream/>,
+    <Login/>,
     document.getElementById('root')
 );
 
