@@ -48,10 +48,10 @@ export default class LoginPage extends Component {
 
     fetchTwitterToken(oauth_token, oauth_verifier) {
         let newProps = {
-            body: {
+            body: JSON.stringify({
                 oauth_token: oauth_token,
                 oauth_verifier: oauth_verifier
-            }
+            })
         };
 
         fetch(LoginPage.authTokenURL, LoginPage.addRequestProps(newProps))
