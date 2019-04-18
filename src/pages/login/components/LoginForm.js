@@ -1,21 +1,11 @@
 /* encoding: utf-8 */
 
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
-import {Button, Header, Icon, Segment} from "semantic-ui-react";
-import Stream from "../../stream/Stream"
+import { Header, Icon, Segment } from "semantic-ui-react";
+import LoginButton from "./LoginButton"
 
 
 export default class LoginForm extends Component {
-
-
-    static launchStream() {
-        ReactDOM.render(
-            <Stream/>,
-            document.getElementById("root")
-        );
-    }
-
 
     render() {
         return (
@@ -24,12 +14,7 @@ export default class LoginForm extends Component {
                     <Icon color="blue" name="chart bar outline"/>
                     Twitter Dashboards
                 </Header>
-                <Button
-                    color="blue"
-                    fluid size="large"
-                    onClick={LoginForm.launchStream}>
-                    Login
-                </Button>
+                <LoginButton/>
             </Segment>
         );
     }

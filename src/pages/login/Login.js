@@ -6,7 +6,7 @@ import LoginForm from "./components/LoginForm";
 import "./Login.css";
 
 
-export default class Login extends Component {
+export default class LoginPage extends Component {
 
 
     render() {

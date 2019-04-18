@@ -7,7 +7,7 @@ import StreamPanel from "./components/StreamPanel";
 import "./Stream.css";
 
 
-export default class Stream extends Component {
+export default class StreamPage extends Component {
 
     render() {
         return (
