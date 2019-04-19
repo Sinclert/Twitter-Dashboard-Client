@@ -1,11 +1,11 @@
 /* encoding: utf-8 */
 
+import React, { Component } from "react";
+import { Grid } from "semantic-ui-react";
 import StreamDetails from "./StreamDetails";
 import StreamGraphs from "./StreamGraphs";
 import StreamMap from "./StreamMap";
 import StreamSidebar from "./StreamSidebar";
-import React, { Component } from "react";
-import { Grid } from "semantic-ui-react";
 
 
 export default class StreamPanel extends Component {

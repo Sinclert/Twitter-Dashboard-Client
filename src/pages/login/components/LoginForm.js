@@ -15,13 +15,12 @@ export default class LoginForm extends Component {
 
 
     fetchTwitterURL() {
-        fetch(authConfig.loginURL, requestConfig)
-            .then(res => { return res.json() })
+        return fetch(authConfig.loginURL, requestConfig)
+            .then(res => res.json())
             .catch(err => console.log(err));
     }
 
 
-    // TODO: There is a bug here
     goToTwitter() {
         this.fetchTwitterURL()
             .then(res => window.location.replace(res['auth_url']))

@@ -9,7 +9,6 @@ import { authConfig, requestConfig } from "../config";
 class RedirectController extends Component {
 
 
-    // TODO: There is a bug here
     componentDidMount() {
         const { search } = this.props.location;
         const request = argsParse(search);
@@ -25,8 +24,8 @@ class RedirectController extends Component {
             oauth_verifier: verifier
         });
 
-        fetch(authConfig.tokenURL, customConfig)
-            .then(res => { return res.json() })
+        return fetch(authConfig.tokenURL, customConfig)
+            .then(res => res.json())
             .catch(err => console.log(err));
     }
 
