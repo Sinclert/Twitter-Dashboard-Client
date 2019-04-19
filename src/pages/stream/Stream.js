@@ -1,13 +1,31 @@
 /* encoding: utf-8 */
 
 import React, { Component } from "react";
+import { withCookies } from "react-cookie";
 import { Grid } from "semantic-ui-react";
 import Header from "./components/Header";
 import StreamPanel from "./components/StreamPanel";
 import "./Stream.css";
 
 
-export default class StreamPage extends Component {
+class StreamPage extends Component {
+
+
+    checkLoggedIn() {
+        const { cookies, history } = this.props;
+        const account = cookies.get('twitter_account');
+        const token = cookies.get('twitter_token');
+
+        if (account !== undefined && token !== undefined) {
+            history.replace("/stream")
+        }
+    }
+
+
+    componentDidMount() {
+        this.checkLoggedIn();
+    }
+
 
     render() {
         return (
@@ -26,3 +44,6 @@ export default class StreamPage extends Component {
         );
     }
 }
+
+
+export default withCookies(StreamPage);

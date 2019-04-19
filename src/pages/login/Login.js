@@ -2,11 +2,12 @@
 
 import React, { Component } from "react";
 import { Button, Grid, Header, Icon } from "semantic-ui-react";
+import { withCookies } from "react-cookie";
 import { parse as argsParse } from "query-string";
 import "./Login.css";
 
 
-export default class LoginPage extends Component {
+class LoginPage extends Component {
 
 
     static authLoginURL = 'http://127.0.0.1:5000/login';
@@ -38,6 +39,17 @@ export default class LoginPage extends Component {
     }
 
 
+    checkLoggedOut() {
+        const { cookies, history } = this.props;
+        const account = cookies.get('twitter_account');
+        const token = cookies.get('twitter_token');
+
+        if (account !== undefined && token !== undefined) {
+            history.replace("/stream")
+        }
+    }
+
+
     fetchTwitterURL() {
         fetch(LoginPage.authLoginURL, LoginPage.RequestProps)
             .then(res => res.json())
@@ -56,15 +68,31 @@ export default class LoginPage extends Component {
 
         fetch(LoginPage.authTokenURL, LoginPage.addRequestProps(newProps))
             .then(res => res.json())
-            .then(res => this.setState({
-                twitterAccount: res['twitter_account'],
-                twitterToken: res['twitter_token']
-            }))
+            .then(res => this.saveTwitterInfo(res))
+            .then(this.props.history.push("/stream"))
             .catch(err => console.log(err));
     }
 
 
+    saveTwitterInfo(response) {
+        const { cookies } = this.props;
+        const account = response['twitter_account'];
+        const token = response['twitter_token'];
+
+        cookies.set('twitter_account', account, { path: '/' });
+        cookies.set('twitter_token', token, { path: '/' });
+        this.setState({
+            twitterAccount: account,
+            twitterToken: token
+        })
+    }
+
+
     componentDidMount() {
+        this.checkLoggedOut();
+
+        // TODO: There is a bug here
+        // Once the user is redirected from Twitter login
         const requestArgs = argsParse(this.props.location.search);
         const oauthToken = requestArgs['oauth_token'];
         const oauthVerifier = requestArgs['oauth_verifier'];
@@ -94,3 +122,6 @@ export default class LoginPage extends Component {
         );
     }
 }
+
+
+export default withCookies(LoginPage);

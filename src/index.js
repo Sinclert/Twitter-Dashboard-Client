@@ -4,6 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter, Route } from 'react-router-dom';
+import { CookiesProvider } from 'react-cookie';
 import "semantic-ui-css/semantic.min.css";
 import './index.css';
 import LoginPage from './pages/login/Login';
@@ -11,11 +12,13 @@ import StreamPage from './pages/stream/Stream';
 
 
 ReactDOM.render(
-    <BrowserRouter>
-        <Route exact path="/" component={LoginPage} />
-        <Route exact path="/login" component={LoginPage} />
-        <Route exact path="/stream" component={StreamPage} />
-    </BrowserRouter>,
+    <CookiesProvider>
+        <BrowserRouter>
+            <Route exact path="/" component={LoginPage} />
+            <Route exact path="/login" component={LoginPage} />
+            <Route exact path="/stream" component={StreamPage} />
+        </BrowserRouter>
+    </CookiesProvider>,
     document.getElementById('root')
 );
 
