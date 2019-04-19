@@ -16,8 +16,8 @@ class StreamPage extends Component {
         const account = cookies.get('twitter_account');
         const token = cookies.get('twitter_token');
 
-        if (account !== undefined && token !== undefined) {
-            history.replace("/stream")
+        if (account === undefined || token === undefined) {
+            history.replace("/login")
         }
     }
 

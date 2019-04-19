@@ -11,8 +11,6 @@ class Header extends Component {
 
     constructor(props) {
         super(props);
-
-        // Necessary binding in order access class props
         this.logout = this.logout.bind(this);
     }
 
