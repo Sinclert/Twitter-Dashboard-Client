@@ -19,7 +19,7 @@ export default class StreamMap extends Component {
 
 
     componentDidMount () {
-        const map = this.refs.map.leafletElement;
+        const map = this.map.leafletElement;
         setTimeout(() => map.invalidateSize(), 0);
     }
 
@@ -31,7 +31,7 @@ export default class StreamMap extends Component {
 
         return (
             // The "ref" prop is necessary to obtain the created instance
-            <Map center={mapCenter} zoom={mapZoom} ref="map">
+            <Map center={mapCenter} zoom={mapZoom} ref={(ref) => this.map = ref}>
 
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

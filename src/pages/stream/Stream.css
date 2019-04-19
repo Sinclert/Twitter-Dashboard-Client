@@ -17,16 +17,22 @@
 }
 
 
-.details-list {
-    width: 100%;
+.details-container {
+    padding-top: 5px    !important; /* Necessary flag */
+    padding-bottom: 5px !important; /* Necessary flag */
 }
 
-.details-list-input {
-    width: 50%;
+.details-menu-item {
+    width: 28%;
 }
 
-.details-list-dropdown {
-    width: 25%;
+.details-menu-text {
+    width: 150px;
+    margin-right: 5px;
+}
+
+.details-start-container {
+    padding: 0    !important; /* Necessary flag */
 }
 
 .dropdown {

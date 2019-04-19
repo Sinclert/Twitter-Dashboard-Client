@@ -1,21 +1,46 @@
 /* encoding: utf-8 */
 
 import React, { Component } from "react";
-import { Header, Icon, Segment } from "semantic-ui-react";
-import LoginButton from "./LoginButton"
+import { Button, Header, Icon } from "semantic-ui-react";
+import { authConfig, requestConfig } from "../../../config";
 
 
 export default class LoginForm extends Component {
 
+
+    constructor(props) {
+        super(props);
+        this.goToTwitter = this.goToTwitter.bind(this);
+    }
+
+
+    fetchTwitterURL() {
+        return fetch(authConfig.loginURL, requestConfig)
+            .then(res => res.json())
+            .catch(err => console.log(err));
+    }
+
+
+    goToTwitter() {
+        this.fetchTwitterURL()
+            .then(res => window.location.replace(res['auth_url']))
+    }
+
+
     render() {
         return (
-            <Segment basic>
+            <div>
                 <Header as="h2" color="blue" textAlign="center">
                     <Icon color="blue" name="chart bar outline"/>
                     Twitter Dashboards
                 </Header>
-                <LoginButton/>
-            </Segment>
+                <Button
+                    color="blue"
+                    fluid size="large"
+                    onClick={this.goToTwitter}>
+                    Login
+                </Button>
+            </div>
         );
     }
 }

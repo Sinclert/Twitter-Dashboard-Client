@@ -1,12 +1,29 @@
 /* encoding: utf-8 */
 
 import React, { Component } from "react";
+import { withCookies } from "react-cookie";
 import { Grid } from "semantic-ui-react";
 import LoginForm from "./components/LoginForm";
 import "./Login.css";
 
 
-export default class LoginPage extends Component {
+class LoginPage extends Component {
+
+
+    checkLoggedOut() {
+        const { cookies, history } = this.props;
+        const account = cookies.get('twitter_account');
+        const token = cookies.get('twitter_token');
+
+        if (account !== undefined && token !== undefined) {
+            history.replace("/stream")
+        }
+    }
+
+
+    componentDidMount() {
+        this.checkLoggedOut();
+    }
 
 
     render() {
@@ -19,3 +36,6 @@ export default class LoginPage extends Component {
         );
     }
 }
+
+
+export default withCookies(LoginPage);

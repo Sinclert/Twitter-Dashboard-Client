@@ -1,7 +1,7 @@
 /* encoding: utf-8 */
 
 import React, { Component } from "react";
-import { Button, Dropdown, Grid, Icon, Image, Input, List, Segment } from "semantic-ui-react";
+import { Button, Dropdown, Icon, Image, Input, Menu, Segment } from "semantic-ui-react";
 
 
 const options = [
@@ -58,83 +58,65 @@ export default class StreamDetails extends Component {
 
     render() {
         return (
-            <Segment>
-                <Grid>
-                    <Grid.Row>
-                        <Grid.Column width={5}>
-                            <List horizontal className="details-list">
-                                <List.Item>
-                                    <Image avatar>
-                                        <Icon circular inverted color="blue" name="map marker"/>
-                                    </Image>
-                                </List.Item>
-                                <List.Item>
-                                    <b>Location:</b>
-                                </List.Item>
-                                <List.Item className="details-list-input">
-                                    <Input
-                                        fluid
-                                        placeholder="San Francisco..."
-                                        size="small"
-                                        onChange={event => this.updateUnsavedFilter(event)}
-                                    />
-                                </List.Item>
-                            </List>
-                        </Grid.Column>
+            <Segment className="details-container">
+                <Menu secondary>
+                    <Menu.Item className="details-menu-item">
+                        <Image avatar>
+                            <Icon circular inverted color="blue" name="map marker"/>
+                        </Image>
+                        <b className="details-menu-text">
+                            Location:
+                        </b>
+                        <Input
+                            fluid
+                            placeholder="San Francisco..."
+                            size="small"
+                            onChange={event => this.updateUnsavedFilter(event)}
+                        />
+                    </Menu.Item>
 
-                        <Grid.Column width={5}>
-                            <List horizontal className="details-list">
-                                <List.Item>
-                                    <Image avatar>
-                                        <Icon circular inverted color="blue" name="filter"/>
-                                    </Image>
-                                </List.Item>
-                                <List.Item>
-                                    <b>Filter term:</b>
-                                </List.Item>
-                                <List.Item className="details-list-input">
-                                    <Input
-                                        fluid
-                                        placeholder="Golden Gate..."
-                                        size="small"
-                                        onChange={event => this.updateUnsavedLocation(event)}
-                                    />
-                                </List.Item>
-                            </List>
-                        </Grid.Column>
+                    <Menu.Item className="details-menu-item">
+                        <Image avatar>
+                            <Icon circular inverted color="blue" name="filter"/>
+                        </Image>
+                        <b className="details-menu-text">
+                            Filter term:
+                        </b>
+                        <Input
+                            fluid
+                            placeholder="Golden Gate..."
+                            size="small"
+                            onChange={event => this.updateUnsavedLocation(event)}
+                        />
+                    </Menu.Item>
 
-                        <Grid.Column width={5}>
-                            <List horizontal className="details-list">
-                                <List.Item>
-                                    <Image avatar>
-                                        <Icon circular inverted color="blue" name="options"/>
-                                    </Image>
-                                </List.Item>
-                                <List.Item>
-                                    <b>Results per category:</b>
-                                </List.Item>
-                                <List.Item className="details-list-dropdown">
-                                    <Dropdown
-                                        fluid
-                                        selection
-                                        options={options}
-                                        size="small"
-                                        className="dropdown"
-                                        onChange={(event, change) => this.updateUnsavedMaxResults(change)}
-                                    />
-                                </List.Item>
-                            </List>
-                        </Grid.Column>
+                    <Menu.Item className="details-menu-item">
+                        <Image avatar>
+                            <Icon circular inverted color="blue" name="options"/>
+                        </Image>
+                        <b className="details-menu-text">
+                            Results:
+                        </b>
+                        <Dropdown
+                            fluid
+                            selection
+                            options={options}
+                            size="small"
+                            className="dropdown"
+                            onChange={(event, change) => this.updateUnsavedMaxResults(change)}
+                        />
+                    </Menu.Item>
 
-                        <Grid.Column width={1} verticalAlign="middle">
+                    <Menu.Menu position="right">
+                        <Menu.Item className="details-start-container">
                             <Button
                                 primary
                                 onClick={this.saveStreamProps}>
                                 Start
                             </Button>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
+                        </Menu.Item>
+                    </Menu.Menu>
+                </Menu>
             </Segment>
         );
     }
