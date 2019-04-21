@@ -3,22 +3,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { CookiesProvider } from 'react-cookie';
-import "semantic-ui-css/semantic.min.css";
-import './index.css';
 import RedirectController from './controllers/Redirect';
 import LoginPage from './pages/login/Login';
 import StreamPage from './pages/stream/Stream';
+import PrivateRoute from './routes/PrivateRoute';
+import PublicRoute from './routes/PublicRoute';
+import "semantic-ui-css/semantic.min.css";
+import './index.css';
 
 
 ReactDOM.render(
     <CookiesProvider>
         <BrowserRouter>
-            <Route exact path="/"         component={LoginPage} />
-            <Route exact path="/redirect" component={RedirectController} />
-            <Route exact path="/login"    component={LoginPage} />
-            <Route exact path="/stream"   component={StreamPage} />
+            <PublicRoute exact path="/"         component={LoginPage} />
+            <PublicRoute exact path="/redirect" component={RedirectController} />
+            <PublicRoute exact path="/login"    component={LoginPage} />
+            <PrivateRoute exact path="/stream"  component={StreamPage} />
         </BrowserRouter>
     </CookiesProvider>,
     document.getElementById('root')
