@@ -1,20 +1,24 @@
 /* encoding: utf-8 */
 
 import React, { Component } from "react";
+import { withCookies } from "react-cookie";
 import { Grid } from "semantic-ui-react";
+import { streamConfig, requestConfig } from "../../../config";
 import StreamDetails from "./StreamDetails";
 import StreamGraphs from "./StreamGraphs";
 import StreamMap from "./StreamMap";
 import StreamSidebar from "./StreamSidebar";
 
 
-export default class StreamPanel extends Component {
+
+class StreamPanel extends Component {
 
 
     constructor(props) {
         super(props);
         this.state = {
             chosenTab: "map",
+            streamStarted: false,
             streamProps: {
                 filterWord: "Everything",
                 location: "San Francisco",
@@ -43,9 +47,7 @@ export default class StreamPanel extends Component {
         // Necessary binding in order to allow children actions
         this.setGraphsTab = this.setGraphsTab.bind(this);
         this.setMapTab = this.setMapTab.bind(this);
-        this.setStreamFilterWord = this.setStreamFilterWord.bind(this);
-        this.setStreamLocation = this.setStreamLocation.bind(this);
-        this.setStreamMaxResults = this.setStreamMaxResults.bind(this);
+        this.setStream = this.setStream.bind(this);
     }
 
 
@@ -89,6 +91,31 @@ export default class StreamPanel extends Component {
             ...oldStreamProps,
             numResults: maxResults
         });
+    }
+
+
+    setStream(filterWord, location, maxResults) {
+        this.setStreamFilterWord(filterWord);
+        this.setStreamLocation(location);
+        this.setStreamMaxResults(maxResults);
+        this.startStream();
+    }
+
+
+    startStream() {
+        const { cookies } = this.props;
+        const account = cookies.get("twitter_account");
+        const token = cookies.get("twitter_token");
+
+        let customConfig = requestConfig;
+        customConfig.body = JSON.stringify({
+            twitter_account: account,
+            twitter_token: token
+        });
+
+        fetch(streamConfig.startURL, customConfig)
+            .then(() => this.setState({ streamStarted: true }))
+            .catch(err => console.log(err))
     }
 
 
@@ -162,10 +189,9 @@ export default class StreamPanel extends Component {
                 <Grid.Row stretched className="panel-header">
                     <Grid.Column width={16}>
                         <StreamDetails
+                            setStream={this.setStream}
                             streamProps={this.state.streamProps}
-                            setStreamFilterWord={this.setStreamFilterWord}
-                            setStreamLocation={this.setStreamLocation}
-                            setStreamMaxResults={this.setStreamMaxResults}/>
+                        />
                     </Grid.Column>
                 </Grid.Row>
 
@@ -173,8 +199,8 @@ export default class StreamPanel extends Component {
                     <Grid.Column width={1} className="panel-body-sidebar">
                         <StreamSidebar
                             chosenTab={this.state.chosenTab}
-                            setMapTab={this.setMapTab}
                             setGraphsTab={this.setGraphsTab}
+                            setMapTab={this.setMapTab}
                         />
                     </Grid.Column>
                     <Grid.Column width={15} className="panel-body-main">
@@ -186,3 +212,6 @@ export default class StreamPanel extends Component {
         );
     }
 }
+
+
+export default withCookies(StreamPanel);

@@ -24,14 +24,16 @@ export default class StreamDetails extends Component {
         };
 
         // Necessary binding in order to allow father actions
-        this.saveStreamProps = this.saveStreamProps.bind(this)
+        this.setStream = this.setStream.bind(this)
     }
 
 
-    saveStreamProps() {
-        this.props.setStreamFilterWord(this.state.unsavedStreamFilterWord);
-        this.props.setStreamLocation(this.state.unsavedStreamLocation);
-        this.props.setStreamMaxResults(this.state.unsavedStreamMaxResults);
+    setStream() {
+        this.props.setStream(
+            this.state.unsavedStreamFilterWord,
+            this.state.unsavedStreamLocation,
+            this.state.unsavedStreamMaxResults
+        );
     }
 
 
@@ -111,7 +113,7 @@ export default class StreamDetails extends Component {
                         <Menu.Item className="details-start-container">
                             <Button
                                 primary
-                                onClick={this.saveStreamProps}>
+                                onClick={this.setStream}>
                                 Start
                             </Button>
                         </Menu.Item>

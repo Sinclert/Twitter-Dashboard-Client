@@ -7,6 +7,11 @@ export const authConfig = {
 };
 
 
+export const streamConfig = {
+    startURL: 'http://127.0.0.1:5000/setStream'
+};
+
+
 export const requestConfig = {
     method: 'POST',
     headers: {
