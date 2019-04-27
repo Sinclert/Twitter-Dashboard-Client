@@ -52,13 +52,14 @@ class StreamPanel extends Component {
         this.setStream = this.setStream.bind(this);
 
         // Socket listeners
-        this.state.streamSocket.on('tweet', tweet => console.log(JSON.parse(tweet)));
+        this.state.streamSocket.on('tweet', tweet => this.handleTweet(tweet));
     }
 
 
-    // Testing adding and removing data points
-    componentDidMount () {
-        this.updateCategoryTweets({coords: {lon: 37.802416, lat: -122.399547}, text: "Example"}, "android");
+    handleTweet(tweet) {
+        tweet = JSON.parse(tweet);
+        const category = tweet.source;
+        this.updateCategoryTweets(tweet, category);
     }
 
 

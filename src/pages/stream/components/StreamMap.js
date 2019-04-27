@@ -13,7 +13,7 @@ export default class StreamMap extends Component {
         this.state = {
             mapCenter: [37.765248, -122.402676],
             mapZoom: 10,
-            markersRadius: 2,
+            markersRadius: 4,
         };
     }
 
@@ -48,7 +48,7 @@ export default class StreamMap extends Component {
                                 {streamData[layerName].tweets.map((tweet, index) =>
                                     <CircleMarker
                                         key={index}
-                                        center={[tweet.coords.lon, tweet.coords.lat]}
+                                        center={[tweet.coords.lat, tweet.coords.lon]}
                                         radius={markersRadius}>
                                         <Popup>
                                             <span>{tweet.text}</span>
