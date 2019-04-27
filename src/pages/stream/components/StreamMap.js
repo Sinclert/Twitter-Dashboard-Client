@@ -41,13 +41,14 @@ export default class StreamMap extends Component {
                 <LayersControl>
                     {layers.map((layerName, index) =>
                         <LayersControl.Overlay
+                            checked={true}
                             key={index}
                             name={layerName}>
                             <FeatureGroup color={streamData[layerName].color}>
                                 {streamData[layerName].tweets.map((tweet, index) =>
                                     <CircleMarker
                                         key={index}
-                                        center={[tweet.x_coords, tweet.y_coords]}
+                                        center={[tweet.coords.lon, tweet.coords.lat]}
                                         radius={markersRadius}>
                                         <Popup>
                                             <span>{tweet.text}</span>

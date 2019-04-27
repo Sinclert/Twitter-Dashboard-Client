@@ -33,7 +33,7 @@ class StreamPanel extends Component {
                     color: "blue",
                     tweets: [],
                 },
-                laptop: {
+                web: {
                     color: "red",
                     tweets: [],
                 },
@@ -53,7 +53,7 @@ class StreamPanel extends Component {
 
     // Testing adding and removing data points
     componentDidMount () {
-        this.updateCategoryTweets({x_coords: 37.802416, y_coords: -122.399547, text: "Example"}, "android");
+        this.updateCategoryTweets({coords: {lon: 37.802416, lat: -122.399547}, text: "Example"}, "android");
     }
 
 
