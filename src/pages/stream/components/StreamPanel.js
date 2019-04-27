@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import { withCookies } from "react-cookie";
 import { Grid } from "semantic-ui-react";
+import io from "socket.io-client";
 import { streamConfig, requestConfig } from "../../../config";
 import StreamDetails from "./StreamDetails";
 import StreamGraphs from "./StreamGraphs";
@@ -18,6 +19,7 @@ class StreamPanel extends Component {
         super(props);
         this.state = {
             chosenTab: "map",
+            streamSocket: io(streamConfig.socketURL),
             streamStarted: false,
             streamProps: {
                 filterWord: "Everything",
@@ -48,6 +50,9 @@ class StreamPanel extends Component {
         this.setGraphsTab = this.setGraphsTab.bind(this);
         this.setMapTab = this.setMapTab.bind(this);
         this.setStream = this.setStream.bind(this);
+
+        // Socket listeners
+        this.state.streamSocket.on('tweet', tweet => console.log(tweet));
     }
 
 
@@ -67,37 +72,19 @@ class StreamPanel extends Component {
     }
 
 
-    setStreamFilterWord(filterWord) {
-        const oldStreamProps = this.state.streamProps;
+    setStreamProps(word, location, results) {
         this.setState({
-            ...oldStreamProps,
-            filterWord: filterWord
-        });
-    }
-
-
-    setStreamLocation(location) {
-        const oldStreamProps = this.state.streamProps;
-        this.setState({
-            ...oldStreamProps,
-            location: location
-        });
-    }
-
-
-    setStreamMaxResults(maxResults) {
-        const oldStreamProps = this.state.streamProps;
-        this.setState({
-            ...oldStreamProps,
-            numResults: maxResults
+            streamProps: {
+                filterWord: word,
+                location: location,
+                numResults: results
+            }
         });
     }
 
 
     setStream(filterWord, location, maxResults) {
-        this.setStreamFilterWord(filterWord);
-        this.setStreamLocation(location);
-        this.setStreamMaxResults(maxResults);
+        this.setStreamProps(filterWord, location, maxResults);
         this.startStream();
     }
 

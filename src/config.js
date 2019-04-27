@@ -8,6 +8,7 @@ export const authConfig = {
 
 
 export const streamConfig = {
+    socketURL: 'http://127.0.0.1:5000/stream',
     startURL: 'http://127.0.0.1:5000/setStream'
 };
 
