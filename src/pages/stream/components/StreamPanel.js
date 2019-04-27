@@ -52,7 +52,7 @@ class StreamPanel extends Component {
         this.setStream = this.setStream.bind(this);
 
         // Socket listeners
-        this.state.streamSocket.on('tweet', tweet => console.log(tweet));
+        this.state.streamSocket.on('tweet', tweet => console.log(JSON.parse(tweet)));
     }
 
 
