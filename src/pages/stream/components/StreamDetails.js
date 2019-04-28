@@ -24,16 +24,22 @@ export default class StreamDetails extends Component {
         };
 
         // Necessary binding in order to allow father actions
-        this.setStream = this.setStream.bind(this)
+        this.startStream = this.startStream.bind(this);
+        this.stopStream = this.stopStream.bind(this);
     }
 
 
-    setStream() {
-        this.props.setStream(
+    startStream() {
+        this.props.startStream(
             this.state.unsavedStreamFilterWord,
             this.state.unsavedStreamLocation,
             this.state.unsavedStreamMaxResults
         );
+    }
+
+
+    stopStream() {
+        this.props.stopStream();
     }
 
 
@@ -59,6 +65,8 @@ export default class StreamDetails extends Component {
 
 
     render() {
+        const { streamStarted } = this.props;
+
         return (
             <Segment className="details-container">
                 <Menu secondary>
@@ -112,9 +120,9 @@ export default class StreamDetails extends Component {
                     <Menu.Menu position="right">
                         <Menu.Item className="details-start-container">
                             <Button
-                                primary
-                                onClick={this.setStream}>
-                                Start
+                                color={streamStarted ? 'red' : 'blue'}
+                                onClick={streamStarted ? this.stopStream : this.startStream}>
+                                {streamStarted ? 'Stop' : 'Start'}
                             </Button>
                         </Menu.Item>
                     </Menu.Menu>

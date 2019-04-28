@@ -3,7 +3,7 @@
 import { Component } from "react";
 import { withCookies } from "react-cookie";
 import { parse as argsParse } from "query-string/index";
-import { authConfig, requestConfig } from "../config";
+import { tokenURL, requestConfig } from "../config";
 
 
 class RedirectController extends Component {
@@ -24,7 +24,7 @@ class RedirectController extends Component {
             oauth_verifier: verifier
         });
 
-        return fetch(authConfig.tokenURL, customConfig)
+        return fetch(tokenURL, customConfig)
             .then(res => res.json())
             .catch(err => console.log(err));
     }

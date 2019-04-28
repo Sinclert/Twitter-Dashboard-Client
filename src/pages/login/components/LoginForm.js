@@ -2,7 +2,7 @@
 
 import React, { Component } from "react";
 import { Button, Header, Icon } from "semantic-ui-react";
-import { authConfig, requestConfig } from "../../../config";
+import { loginURL, requestConfig } from "../../../config";
 
 
 export default class LoginForm extends Component {
@@ -15,7 +15,7 @@ export default class LoginForm extends Component {
 
 
     fetchTwitterURL() {
-        return fetch(authConfig.loginURL, requestConfig)
+        return fetch(loginURL, requestConfig)
             .then(res => res.json())
             .catch(err => console.log(err));
     }

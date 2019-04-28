@@ -1,16 +1,15 @@
 /* encoding: utf-8 */
 
 
-export const authConfig = {
-    loginURL: 'http://127.0.0.1:5000/login',
-    tokenURL: 'http://127.0.0.1:5000/token',
-};
+/* Auth configuration URLs */
+export const loginURL = 'http://127.0.0.1:5000/login';
+export const tokenURL = 'http://127.0.0.1:5000/token';
 
 
-export const streamConfig = {
-    socketURL: 'http://127.0.0.1:5000/stream',
-    startURL: 'http://127.0.0.1:5000/setStream'
-};
+/* Stream configuration URLs */
+export const socketURL = 'http://127.0.0.1:5000/stream';
+export const startURL = 'http://127.0.0.1:5000/startStream';
+export const stopURL = 'http://127.0.0.1:5000/stopStream';
 
 
 export const requestConfig = {

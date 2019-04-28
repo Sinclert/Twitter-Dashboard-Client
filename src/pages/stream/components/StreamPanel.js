@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import { withCookies } from "react-cookie";
 import { Grid } from "semantic-ui-react";
 import io from "socket.io-client";
-import { streamConfig, requestConfig } from "../../../config";
+import { socketURL, startURL, stopURL, requestConfig } from "../../../config";
 import StreamDetails from "./StreamDetails";
 import StreamGraphs from "./StreamGraphs";
 import StreamMap from "./StreamMap";
@@ -19,11 +19,11 @@ class StreamPanel extends Component {
         super(props);
         this.state = {
             chosenTab: "map",
-            streamSocket: io(streamConfig.socketURL),
+            streamSocket: io(socketURL),
             streamStarted: false,
             streamProps: {
-                filterWord: "Everything",
-                location: "San Francisco",
+                filterWord: "",
+                location: "",
                 numResults: 50,
             },
             streamData: {
@@ -49,17 +49,23 @@ class StreamPanel extends Component {
         // Necessary binding in order to allow children actions
         this.setGraphsTab = this.setGraphsTab.bind(this);
         this.setMapTab = this.setMapTab.bind(this);
-        this.setStream = this.setStream.bind(this);
+        this.startStream = this.startStream.bind(this);
+        this.stopStream = this.stopStream.bind(this);
 
         // Socket listeners
         this.state.streamSocket.on('tweet', tweet => this.handleTweet(tweet));
     }
 
 
-    handleTweet(tweet) {
-        tweet = JSON.parse(tweet);
-        const category = tweet.source;
-        this.updateCategoryTweets(tweet, category);
+    renderTab() {
+        switch (this.state.chosenTab) {
+            case "graphs":
+                return <StreamGraphs streamData={this.state.streamData}/>;
+            case "map":
+                return <StreamMap streamData={this.state.streamData}/>;
+            default:
+                return <StreamMap streamData={this.state.streamData}/>;
+        }
     }
 
 
@@ -70,6 +76,27 @@ class StreamPanel extends Component {
 
     setGraphsTab() {
         this.setState({chosenTab: "graphs"});
+    }
+
+
+    buildRequest() {
+        const { cookies } = this.props;
+        const account = cookies.get("twitter_account");
+        const token = cookies.get("twitter_token");
+
+        let customConfig = requestConfig;
+        customConfig.body = JSON.stringify({
+            twitter_account: account,
+            twitter_token: token
+        });
+        return customConfig;
+    }
+
+
+    handleTweet(tweet) {
+        tweet = JSON.parse(tweet);
+        const category = tweet.source;
+        this.updateCategoryTweets(tweet, category);
     }
 
 
@@ -84,38 +111,21 @@ class StreamPanel extends Component {
     }
 
 
-    setStream(filterWord, location, maxResults) {
+    startStream(filterWord, location, maxResults) {
         this.setStreamProps(filterWord, location, maxResults);
-        this.startStream();
-    }
 
-
-    startStream() {
-        const { cookies } = this.props;
-        const account = cookies.get("twitter_account");
-        const token = cookies.get("twitter_token");
-
-        let customConfig = requestConfig;
-        customConfig.body = JSON.stringify({
-            twitter_account: account,
-            twitter_token: token
-        });
-
-        fetch(streamConfig.startURL, customConfig)
+        fetch(startURL, this.buildRequest())
             .then(() => this.setState({ streamStarted: true }))
             .catch(err => console.log(err))
     }
 
 
-    renderTab() {
-        switch (this.state.chosenTab) {
-            case "graphs":
-                return <StreamGraphs streamData={this.state.streamData}/>;
-            case "map":
-                return <StreamMap streamData={this.state.streamData}/>;
-            default:
-                return <StreamMap streamData={this.state.streamData}/>;
-        }
+    stopStream() {
+        this.setStreamProps("", "", 50);
+
+        fetch(stopURL, this.buildRequest())
+            .then(() => this.setState({ streamStarted: false }))
+            .catch(err => console.log(err));
     }
 
 
@@ -177,8 +187,9 @@ class StreamPanel extends Component {
                 <Grid.Row stretched className="panel-header">
                     <Grid.Column width={16}>
                         <StreamDetails
-                            setStream={this.setStream}
-                            streamProps={this.state.streamProps}
+                            startStream={this.startStream}
+                            stopStream={this.stopStream}
+                            streamStarted={this.state.streamStarted}
                         />
                     </Grid.Column>
                 </Grid.Row>
