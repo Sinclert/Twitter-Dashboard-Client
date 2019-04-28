@@ -3,7 +3,7 @@
 import { Component } from "react";
 import { withCookies } from "react-cookie";
 import { parse as argsParse } from "query-string/index";
-import { tokenURL, requestConfig } from "../config";
+import { requestConfig, tokenURL } from "../config";
 
 
 class RedirectController extends Component {

@@ -4,12 +4,11 @@ import React, { Component } from "react";
 import { withCookies } from "react-cookie";
 import { Grid } from "semantic-ui-react";
 import io from "socket.io-client";
-import { socketURL, startURL, stopURL, requestConfig } from "../../../config";
+import { requestConfig, socketURL, startURL, stopURL } from "../../../config";
 import StreamDetails from "./StreamDetails";
 import StreamGraphs from "./StreamGraphs";
 import StreamMap from "./StreamMap";
 import StreamSidebar from "./StreamSidebar";
-
 
 
 class StreamPanel extends Component {
@@ -23,26 +22,14 @@ class StreamPanel extends Component {
             streamStarted: false,
             streamProps: {
                 filterWord: "",
-                location: "",
-                numResults: 50,
+                location:   "",
+                numResults: 20,
             },
             streamData: {
-                android: {
-                    color: "green",
-                    tweets: [],
-                },
-                iphone: {
-                    color: "blue",
-                    tweets: [],
-                },
-                web: {
-                    color: "red",
-                    tweets: [],
-                },
-                other: {
-                    color: "grey",
-                    tweets: [],
-                },
+                android: [],
+                iphone:  [],
+                web:     [],
+                other:   [],
             },
         };
 
@@ -124,53 +111,46 @@ class StreamPanel extends Component {
         this.setStreamProps("", "", 50);
 
         fetch(stopURL, this.buildRequest())
-            .then(() => this.setState({ streamStarted: false }))
+            .then(() => this.setState({
+                streamStarted: false,
+                streamData: {
+                    android: [],
+                    iphone:  [],
+                    web:     [],
+                    other:   [],
+                }
+            }))
             .catch(err => console.log(err));
     }
 
 
     addCategoryTweet(tweet, category) {
-        const oldStreamData = this.state.streamData;
-        const oldCategoryProps = oldStreamData[category];
-        const oldCategoryTweets = oldCategoryProps.tweets;
+        const streamData = this.state.streamData;
+        const categoryData = streamData[category];
 
-        const newCategory = {
-            ...oldCategoryProps,
-            tweets: [
-                ...oldCategoryTweets,
-                tweet
-            ],
-        };
+        streamData[category] = [...categoryData, tweet];
 
-        const newStreamData = oldStreamData;
-        newStreamData[category] = newCategory;
         this.setState({
-            streamData: newStreamData
+            streamData: streamData
         })
     }
 
 
     removeCategoryTweet(category) {
-        const oldStreamData = this.state.streamData;
-        const oldCategoryProps = oldStreamData[category];
-        const oldCategoryTweets = oldCategoryProps.tweets;
-        oldCategoryTweets.shift();
+        const streamData = this.state.streamData;
+        const categoryData = streamData[category];
 
-        const newCategory = {
-            ...oldCategoryProps,
-            tweets: oldCategoryTweets
-        };
+        categoryData.shift();
+        streamData[category] = [...categoryData];
 
-        const newStreamData = oldStreamData;
-        newStreamData[category] = newCategory;
         this.setState({
-            streamData: newStreamData
+            streamData: streamData
         })
     }
 
 
     updateCategoryTweets(tweet, category) {
-        let tweetsList = this.state.streamData[category].tweets;
+        let tweetsList = this.state.streamData[category];
         let maxResults = this.state.streamProps.numResults;
 
         if (tweetsList.length === maxResults) {

@@ -6,7 +6,7 @@ import { Grid, Segment } from "semantic-ui-react"
 
 
 // Example
-const data= {
+const data = {
      labels: ["January", "February", "March", "April", "May", "June", "July"],
      datasets: [{
          label: "My First dataset",

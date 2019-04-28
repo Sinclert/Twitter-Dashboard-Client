@@ -20,7 +20,7 @@ export default class StreamDetails extends Component {
         this.state = {
             unsavedStreamFilterWord: "",
             unsavedStreamLocation: "",
-            unsavedStreamMaxResults: "",
+            unsavedStreamMaxResults: 20,
         };
 
         // Necessary binding in order to allow father actions
@@ -110,9 +110,10 @@ export default class StreamDetails extends Component {
                         <Dropdown
                             fluid
                             selection
+                            className="dropdown"
+                            defaultValue={20}
                             options={options}
                             size="small"
-                            className="dropdown"
                             onChange={(event, change) => this.updateUnsavedMaxResults(change)}
                         />
                     </Menu.Item>

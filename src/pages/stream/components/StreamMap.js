@@ -5,6 +5,13 @@ import { CircleMarker, FeatureGroup, LayersControl, Map, Popup, TileLayer } from
 import "leaflet/dist/leaflet.css";
 
 
+const labelColors = {
+    'positive': 'green',
+    'negative': 'red',
+    'neutral': 'gray'
+};
+
+
 export default class StreamMap extends Component {
 
 
@@ -44,11 +51,12 @@ export default class StreamMap extends Component {
                             checked={true}
                             key={index}
                             name={layerName}>
-                            <FeatureGroup color={streamData[layerName].color}>
-                                {streamData[layerName].tweets.map((tweet, index) =>
+                            <FeatureGroup>
+                                {streamData[layerName].map((tweet, index) =>
                                     <CircleMarker
                                         key={index}
                                         center={[tweet.coords.lat, tweet.coords.lon]}
+                                        color={labelColors[tweet.label]}
                                         radius={markersRadius}>
                                         <Popup>
                                             <span>{tweet.text}</span>
