@@ -19,3 +19,12 @@ export const requestConfig = {
         'Content-Type': 'application/json'
     }
 };
+
+
+/* Color tiles provider */
+export const colorTilesHost = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+export const colorTilesAttr = '<a href=http://osm.org/copyright>OpenStreetMap</a>';
+
+/* Greyscale tiles provider */
+export const greyTilesHost = 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png';
+export const greyTilesAttr = '<a href=http://osm.org/copyright>OpenStreetMap</a>';

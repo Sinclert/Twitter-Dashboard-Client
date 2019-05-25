@@ -1,6 +1,7 @@
 /* encoding: utf-8 */
 
 import React, { Component } from "react";
+import { colorTilesHost, colorTilesAttr, greyTilesHost, greyTilesAttr } from "../../../config";
 import { CircleMarker, FeatureGroup, LayersControl, Map, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -39,13 +40,24 @@ export default class StreamMap extends Component {
         return (
             // The "ref" prop is necessary to obtain the created instance
             <Map center={mapCenter} zoom={mapZoom} ref={(ref) => this.map = ref}>
-
-                <TileLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution="<a href=http://osm.org/copyright>OpenStreetMap</a>"
-                />
-
                 <LayersControl>
+                    <LayersControl.BaseLayer
+                        checked={false}
+                        name="Color">
+                        <TileLayer
+                            url={colorTilesHost}
+                            attribution={colorTilesAttr}
+                        />
+                    </LayersControl.BaseLayer>
+                    <LayersControl.BaseLayer
+                        checked={true}
+                        name="Greyscale">
+                        <TileLayer
+                            url={greyTilesHost}
+                            attribution={greyTilesAttr}
+                        />
+                    </LayersControl.BaseLayer>
+
                     {layers.map((layerName, index) =>
                         <LayersControl.Overlay
                             checked={true}
