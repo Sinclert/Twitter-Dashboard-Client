@@ -25,33 +25,40 @@ class StreamPanel extends Component {
                 location:   "",
                 numResults: 20,
             },
-            streamData: {
-                android: [],
-                iphone:  [],
-                web:     [],
-                other:   [],
-            },
+            streamData: [],
         };
 
+        // Stream source filters
+        this.streamSources = ["android", "iphone", "web", "other"];
+
         // Necessary binding in order to allow children actions
-        this.setGraphsTab = this.setGraphsTab.bind(this);
-        this.setMapTab = this.setMapTab.bind(this);
-        this.startStream = this.startStream.bind(this);
-        this.stopStream = this.stopStream.bind(this);
+        this.setGraphsTab  = this.setGraphsTab.bind(this);
+        this.setMapTab     = this.setMapTab.bind(this);
+        this.startStream   = this.startStream.bind(this);
+        this.stopStream    = this.stopStream.bind(this);
 
         // Socket listeners
-        this.state.streamSocket.on('json', tweet => this.handleTweet(tweet));
+        this.state.streamSocket.on('json', tweet => this.updateData(tweet));
     }
 
 
     renderTab() {
         switch (this.state.chosenTab) {
             case "graphs":
-                return <StreamGraphs streamData={this.state.streamData}/>;
+                return <StreamGraphs
+                    streamData={this.state.streamData}
+                    streamSources={this.streamSources}
+                />;
             case "map":
-                return <StreamMap streamData={this.state.streamData}/>;
+                return <StreamMap
+                    streamData={this.state.streamData}
+                    streamSources={this.streamSources}
+                />;
             default:
-                return <StreamMap streamData={this.state.streamData}/>;
+                return <StreamMap
+                    streamData={this.state.streamData}
+                    streamSources={this.streamSources}
+                />;
         }
     }
 
@@ -80,13 +87,6 @@ class StreamPanel extends Component {
     }
 
 
-    handleTweet(tweet) {
-        tweet = JSON.parse(tweet);
-        const category = tweet.source;
-        this.updateCategoryTweets(tweet, category);
-    }
-
-
     setStreamProps(word, location, results) {
         this.setState({
             streamProps: {
@@ -108,55 +108,29 @@ class StreamPanel extends Component {
 
 
     stopStream() {
-        this.setStreamProps("", "", 50);
+        this.setStreamProps("", "", 20);
 
         fetch(stopURL, this.buildRequest())
             .then(() => this.setState({
                 streamStarted: false,
-                streamData: {
-                    android: [],
-                    iphone:  [],
-                    web:     [],
-                    other:   [],
-                }
+                streamData: []
             }))
             .catch(err => console.log(err));
     }
 
 
-    addCategoryTweet(tweet, category) {
-        const streamData = this.state.streamData;
-        const categoryData = streamData[category];
-
-        streamData[category] = [...categoryData, tweet];
-
-        this.setState({
-            streamData: streamData
-        })
-    }
-
-
-    removeCategoryTweet(category) {
-        const streamData = this.state.streamData;
-        const categoryData = streamData[category];
-
-        categoryData.shift();
-        streamData[category] = [...categoryData];
-
-        this.setState({
-            streamData: streamData
-        })
-    }
-
-
-    updateCategoryTweets(tweet, category) {
-        let tweetsList = this.state.streamData[category];
+    updateData(tweet) {
         let maxResults = this.state.streamProps.numResults;
+        let streamData = this.state.streamData;
 
-        if (tweetsList.length === maxResults) {
-            this.removeCategoryTweet(category);
+        if (streamData.length === maxResults) {
+            streamData.shift();
         }
-        this.addCategoryTweet(tweet, category);
+
+        streamData = [...streamData, JSON.parse(tweet)];
+        this.setState({
+            streamData: streamData
+        })
     }
 
 

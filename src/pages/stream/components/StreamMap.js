@@ -33,8 +33,7 @@ export default class StreamMap extends Component {
 
 
     render() {
-        const { streamData } = this.props;
-        const layers = Object.keys(streamData);
+        const { streamData, streamSources } = this.props;
         const { mapCenter, mapZoom, markersRadius } = this.state;
 
         return (
@@ -58,22 +57,24 @@ export default class StreamMap extends Component {
                         />
                     </LayersControl.BaseLayer>
 
-                    {layers.map((layerName, index) =>
+                    {streamSources.map((source, index) =>
                         <LayersControl.Overlay
                             checked={true}
                             key={index}
-                            name={layerName}>
+                            name={source}>
                             <FeatureGroup>
-                                {streamData[layerName].map((tweet, index) =>
-                                    <CircleMarker
-                                        key={index}
-                                        center={[tweet.coords.lat, tweet.coords.lon]}
-                                        color={labelColors[tweet.label]}
-                                        radius={markersRadius}>
-                                        <Popup>
-                                            <span>{tweet.text}</span>
-                                        </Popup>
-                                    </CircleMarker>
+                                {streamData
+                                    .filter((tweet) => tweet.source === source)
+                                    .map((tweet, index) =>
+                                        <CircleMarker
+                                            key={index}
+                                            center={[tweet.coords.lat, tweet.coords.lon]}
+                                            color={labelColors[tweet.label]}
+                                            radius={markersRadius}>
+                                            <Popup>
+                                                <span>{tweet.text}</span>
+                                            </Popup>
+                                        </CircleMarker>
                                 )}
                             </FeatureGroup>
                         </LayersControl.Overlay>
