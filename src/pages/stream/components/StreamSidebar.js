@@ -6,10 +6,11 @@ import { Icon, Menu } from "semantic-ui-react";
 
 export default class StreamSidebar extends Component {
 
+
     render() {
 
         // Change-state functions passed by the parent
-        const { chosenTab, setGraphsTab, setMapTab } = this.props;
+        const { chosenTab, setMapTab, setLineTab, setPieTab } = this.props;
 
         return (
             <Menu compact icon vertical>
@@ -21,9 +22,16 @@ export default class StreamSidebar extends Component {
                 </Menu.Item>
 
                 <Menu.Item
-                    name="graphs"
+                    name="Lines chart"
+                    active={chosenTab === "line"}
+                    onClick={setLineTab}>
+                    <Icon circular inverted color="blue" name="chart line"/>
+                </Menu.Item>
+
+                <Menu.Item
+                    name="Pie chart"
                     active={chosenTab === "graphs"}
-                    onClick={setGraphsTab}>
+                    onClick={setPieTab}>
                     <Icon circular inverted color="blue" name="pie graph"/>
                 </Menu.Item>
             </Menu>

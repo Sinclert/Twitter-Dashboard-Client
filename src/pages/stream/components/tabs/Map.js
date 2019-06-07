@@ -1,7 +1,7 @@
 /* encoding: utf-8 */
 
 import React, { Component } from "react";
-import { colorTilesHost, colorTilesAttr, greyTilesHost, greyTilesAttr } from "../../../config";
+import { colorTilesHost, colorTilesAttr, greyTilesHost, greyTilesAttr } from "../../../../config";
 import { CircleMarker, FeatureGroup, LayersControl, Map, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -9,11 +9,12 @@ import "leaflet/dist/leaflet.css";
 const labelColors = {
     'positive': 'green',
     'negative': 'red',
-    'neutral': 'gray'
+    'neutral': 'gray',
+    'unknown': 'white'
 };
 
 
-export default class StreamMap extends Component {
+export default class MapCanvas extends Component {
 
 
     constructor(props) {

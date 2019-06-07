@@ -6,9 +6,11 @@ import { Grid } from "semantic-ui-react";
 import io from "socket.io-client";
 import { requestConfig, socketURL, startURL, stopURL } from "../../../config";
 import StreamDetails from "./StreamDetails";
-import StreamGraphs from "./StreamGraphs";
-import StreamMap from "./StreamMap";
 import StreamSidebar from "./StreamSidebar";
+import MapCanvas from "./tabs/Map";
+import LineChart from "./tabs/ChartLine";
+import PieChart from "./tabs/ChartPie";
+
 
 
 class StreamPanel extends Component {
@@ -32,8 +34,9 @@ class StreamPanel extends Component {
         this.streamSources = ["android", "iphone", "web", "other"];
 
         // Necessary binding in order to allow children actions
-        this.setGraphsTab  = this.setGraphsTab.bind(this);
         this.setMapTab     = this.setMapTab.bind(this);
+        this.setLineTab    = this.setLineTab.bind(this);
+        this.setPieTab     = this.setPieTab.bind(this);
         this.startStream   = this.startStream.bind(this);
         this.stopStream    = this.stopStream.bind(this);
 
@@ -44,18 +47,21 @@ class StreamPanel extends Component {
 
     renderTab() {
         switch (this.state.chosenTab) {
-            case "graphs":
-                return <StreamGraphs
+            case "map":
+                return <MapCanvas
                     streamData={this.state.streamData}
                     streamSources={this.streamSources}
                 />;
-            case "map":
-                return <StreamMap
+            case "line":
+                return <LineChart
                     streamData={this.state.streamData}
-                    streamSources={this.streamSources}
+                />;
+            case "pie":
+                return <PieChart
+                    streamData={this.state.streamData}
                 />;
             default:
-                return <StreamMap
+                return <MapCanvas
                     streamData={this.state.streamData}
                     streamSources={this.streamSources}
                 />;
@@ -68,8 +74,13 @@ class StreamPanel extends Component {
     }
 
 
-    setGraphsTab() {
-        this.setState({chosenTab: "graphs"});
+    setLineTab() {
+        this.setState({chosenTab: "line"});
+    }
+
+
+    setPieTab() {
+        this.setState({chosenTab: "pie"});
     }
 
 
@@ -152,8 +163,9 @@ class StreamPanel extends Component {
                     <Grid.Column width={1} className="panel-body-sidebar">
                         <StreamSidebar
                             chosenTab={this.state.chosenTab}
-                            setGraphsTab={this.setGraphsTab}
                             setMapTab={this.setMapTab}
+                            setLineTab={this.setLineTab}
+                            setPieTab={this.setPieTab}
                         />
                     </Grid.Column>
                     <Grid.Column width={15} className="panel-body-main">
