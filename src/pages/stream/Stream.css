@@ -61,3 +61,8 @@
 .panel-body-main {
     max-width: calc(100% - 100px);
 }
+
+
+.chart-description-p {
+    text-align: justify;
+}
