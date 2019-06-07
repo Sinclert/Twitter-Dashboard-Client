@@ -20,7 +20,9 @@ export default class PieChart extends Component {
         this.sourceLabels.forEach((source) => {
             let counter = 0;
             data.forEach((tweet) => {
-                if (tweet.source.toLowerCase() === source.toLowerCase()) {
+                let label  = tweet.source.toLowerCase();
+                let source = source.toLowerCase();
+                if (label === source) {
                     counter++;
                 }
             });

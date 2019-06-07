@@ -17,10 +17,12 @@ export default class LineChart extends Component {
     updateCounters(data) {
         let newCounters = [];
 
-        this.sentimentLabels.forEach((source) => {
+        this.sentimentLabels.forEach((sentiment) => {
             let counter = 0;
             data.forEach((tweet) => {
-                if (tweet.label.toLowerCase() === source.toLowerCase()) {
+                let label = tweet.label.toLowerCase();
+                let sent  = sentiment.toLowerCase();
+                if (label === sent) {
                     counter++;
                 }
             });
