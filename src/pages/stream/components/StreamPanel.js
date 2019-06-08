@@ -26,9 +26,9 @@ class StreamPanel extends Component {
                 filterWord: "",
                 location:   "",
                 numResults: 20,
-                numAggregations: 10,
             },
             streamData: [],
+            streamAggHistory: 10,
             streamAggSourceData: [0, 0, 0, 0],
             streamAggSentimentData: {
                 positive: [0],
@@ -200,7 +200,7 @@ class StreamPanel extends Component {
             const prevCounters = this.state.streamAggSentimentData[sentiment];
             const newCounter = this.countBySentiment(data, sentiment);
 
-            if (prevCounters.length === this.state.numAggregations) {
+            if (prevCounters.length === this.state.streamAggHistory) {
                 prevCounters.shift();
             }
             allCounters[sentiment] = [...prevCounters, newCounter]
