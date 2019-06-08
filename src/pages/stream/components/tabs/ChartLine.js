@@ -14,22 +14,30 @@ export default class LineChart extends Component {
     }
 
 
-    updateCounters(data) {
-        let newCounters = [];
+    countBySentiment(data, sentiment) {
+        let occurrences = 0;
 
-        this.sentimentLabels.forEach((sentiment) => {
-            let counter = 0;
-            data.forEach((tweet) => {
-                let label = tweet.label.toLowerCase();
-                let sent  = sentiment.toLowerCase();
-                if (label === sent) {
-                    counter++;
-                }
-            });
-            newCounters.push(counter);
+        data.forEach((tweet) => {
+            let label = tweet.label.toLowerCase();
+            let sent  = sentiment.toLowerCase();
+            if (label === sent) {
+                occurrences++;
+            }
         });
 
-        return newCounters;
+        return occurrences;
+    }
+
+
+    computeCounter(data) {
+        let newCounter = [];
+
+        this.sentimentLabels.forEach((sentiment) => {
+            let occurrences = this.countBySentiment(data, sentiment);
+            newCounter.push(occurrences);
+        });
+
+        return newCounter;
     }
 
 
@@ -47,7 +55,7 @@ export default class LineChart extends Component {
                                 data={{
                                     datasets: [{
                                         label: 'Sentiment',
-                                        data: this.updateCounters(streamData),
+                                        data: this.computeCounter(streamData),
                                         backgroundColor: [
                                             'rgb(000, 150, 000)',
                                             'rgb(150, 000, 000)',
@@ -76,13 +84,13 @@ export default class LineChart extends Component {
                                 </p>
                                 <p className="chart-description-p">
                                     The sentiment labels are:
-                                    <ul>
-                                        <li>Positive (green).</li>
-                                        <li>Negative (red).</li>
-                                        <li>Neutral (gray).</li>
-                                        <li>Unknown (white).</li>
-                                    </ul>
                                 </p>
+                                <ul>
+                                    <li>Positive (green).</li>
+                                    <li>Negative (red).</li>
+                                    <li>Neutral (gray).</li>
+                                    <li>Unknown (white).</li>
+                                </ul>
                             </Container>
                         </Grid.Column>
                     </Grid.Row>

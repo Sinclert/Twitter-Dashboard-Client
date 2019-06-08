@@ -14,22 +14,30 @@ export default class PieChart extends Component {
     }
 
 
-    updateCounters(data) {
-        let newCounters = [];
+    countBySource(data, source) {
+        let occurrences = 0;
 
-        this.sourceLabels.forEach((source) => {
-            let counter = 0;
-            data.forEach((tweet) => {
-                let label = tweet.source.toLowerCase();
-                let src   = source.toLowerCase();
-                if (label === src) {
-                    counter++;
-                }
-            });
-            newCounters.push(counter);
+        data.forEach((tweet) => {
+            let label = tweet.source.toLowerCase();
+            let src   = source.toLowerCase();
+            if (label === src) {
+                occurrences++;
+            }
         });
 
-        return newCounters;
+        return occurrences;
+    }
+
+
+    computeCounter(data) {
+        let newCounter = [];
+
+        this.sourceLabels.forEach((source) => {
+            let occurrences = this.countBySource(data, source);
+            newCounter.push(occurrences);
+        });
+
+        return newCounter;
     }
 
 
@@ -46,7 +54,7 @@ export default class PieChart extends Component {
                                 height={250}
                                 data={{
                                     datasets: [{
-                                        data: this.updateCounters(streamData),
+                                        data: this.computeCounter(streamData),
                                         backgroundColor: [
                                             'rgb(000, 150, 000)',
                                             'rgb(200, 200, 200)',
@@ -75,13 +83,13 @@ export default class PieChart extends Component {
                                 </p>
                                 <p className="chart-description-p">
                                     The source devices are:
-                                    <ul>
-                                        <li>Android (green).</li>
-                                        <li>iPhone (white).</li>
-                                        <li>Web browser (blue).</li>
-                                        <li>Other (gray).</li>
-                                    </ul>
                                 </p>
+                                <ul>
+                                    <li>Android (green).</li>
+                                    <li>iPhone (white).</li>
+                                    <li>Web browser (blue).</li>
+                                    <li>Other (gray).</li>
+                                </ul>
                             </Container>
                         </Grid.Column>
                     </Grid.Row>

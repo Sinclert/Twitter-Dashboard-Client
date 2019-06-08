@@ -30,7 +30,7 @@ export default class StreamSidebar extends Component {
 
                 <Menu.Item
                     name="Pie chart"
-                    active={chosenTab === "graphs"}
+                    active={chosenTab === "pie"}
                     onClick={setPieTab}>
                     <Icon circular inverted color="blue" name="pie graph"/>
                 </Menu.Item>
