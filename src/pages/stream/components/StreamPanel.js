@@ -26,8 +26,16 @@ class StreamPanel extends Component {
                 filterWord: "",
                 location:   "",
                 numResults: 20,
+                numAggregations: 10,
             },
             streamData: [],
+            streamAggSourceData: [0, 0, 0, 0],
+            streamAggSentimentData: {
+                positive: [0],
+                negative: [0],
+                neutral:  [0],
+                unknown:  [0],
+            },
         };
 
         // Stream source filters
@@ -54,11 +62,11 @@ class StreamPanel extends Component {
                 />;
             case "line":
                 return <LineChart
-                    streamData={this.state.streamData}
+                    streamAggSentimentData={this.state.streamAggSentimentData}
                 />;
             case "pie":
                 return <PieChart
-                    streamData={this.state.streamData}
+                    streamAggSourceData={this.state.streamAggSourceData}
                 />;
             default:
                 return <MapCanvas
@@ -130,7 +138,7 @@ class StreamPanel extends Component {
     }
 
 
-    updateData(tweet) {
+    updateStreamData(tweet) {
         let maxResults = this.state.streamProps.numResults;
         let streamData = this.state.streamData;
 
@@ -139,8 +147,78 @@ class StreamPanel extends Component {
         }
 
         streamData = [...streamData, JSON.parse(tweet)];
+        return streamData;
+    }
+
+
+    countBySource(data, source) {
+        let occurrences = 0;
+
+        data.forEach((tweet) => {
+            let label = tweet.source.toLowerCase();
+            let src   = source.toLowerCase();
+            if (label === src) {
+                occurrences++;
+            }
+        });
+
+        return occurrences;
+    }
+
+
+    computeSourceCounter(data) {
+        let newCounter = [];
+
+        this.streamSources.forEach((source) => {
+            let occurrences = this.countBySource(data, source);
+            newCounter.push(occurrences);
+        });
+
+        return newCounter;
+    }
+
+
+    countBySentiment(data, sentiment) {
+        let occurrences = 0;
+
+        data.forEach((tweet) => {
+            let label = tweet.label.toLowerCase();
+            let sent  = sentiment.toLowerCase();
+            if (label === sent) {
+                occurrences++;
+            }
+        });
+
+        return occurrences;
+    }
+
+
+    computeSentimentCounter(data) {
+        let allCounters = {};
+
+        Object.keys(this.state.streamAggSentimentData).forEach((sentiment) => {
+            const prevCounters = this.state.streamAggSentimentData[sentiment];
+            const newCounter = this.countBySentiment(data, sentiment);
+
+            if (prevCounters.length === this.state.numAggregations) {
+                prevCounters.shift();
+            }
+            allCounters[sentiment] = [...prevCounters, newCounter]
+        });
+
+        return allCounters
+    }
+
+
+    updateData(tweet) {
+        const newData = this.updateStreamData(tweet);
+        const newAggSourceData = this.computeSourceCounter(newData);
+        const newAggSentimentData = this.computeSentimentCounter(newData);
+
         this.setState({
-            streamData: streamData
+            streamData: newData,
+            streamAggSourceData: newAggSourceData,
+            streamAggSentimentData: newAggSentimentData,
         })
     }
 

@@ -14,35 +14,8 @@ export default class LineChart extends Component {
     }
 
 
-    countBySentiment(data, sentiment) {
-        let occurrences = 0;
-
-        data.forEach((tweet) => {
-            let label = tweet.label.toLowerCase();
-            let sent  = sentiment.toLowerCase();
-            if (label === sent) {
-                occurrences++;
-            }
-        });
-
-        return occurrences;
-    }
-
-
-    computeCounter(data) {
-        let newCounter = [];
-
-        this.sentimentLabels.forEach((sentiment) => {
-            let occurrences = this.countBySentiment(data, sentiment);
-            newCounter.push(occurrences);
-        });
-
-        return newCounter;
-    }
-
-
     render() {
-        const { streamData } = this.props;
+        const { streamAggSentimentData } = this.props;
 
         return (
             <Segment padded>
@@ -53,17 +26,37 @@ export default class LineChart extends Component {
                                 width={400}
                                 height={250}
                                 data={{
-                                    datasets: [{
-                                        label: 'Sentiment',
-                                        data: this.computeCounter(streamData),
-                                        backgroundColor: [
-                                            'rgb(000, 150, 000)',
-                                            'rgb(150, 000, 000)',
-                                            'rgb(100, 100, 100)',
-                                            'rgb(200, 200, 200)',
-                                        ],
-                                    }],
-                                    labels: this.sentimentLabels,
+                                    datasets: [
+                                        {
+                                            label: 'Positive',
+                                            data: streamAggSentimentData['positive'],
+                                            borderColor: 'rgb(000, 150, 000)',
+                                            backgroundColor: 'rgb(000, 150, 000)',
+                                            fill: false,
+                                        },
+                                        {
+                                            label: 'Negative',
+                                            data: streamAggSentimentData['negative'],
+                                            borderColor: 'rgb(150, 000, 000)',
+                                            backgroundColor: 'rgb(150, 000, 000)',
+                                            fill: false,
+                                        },
+                                        {
+                                            label: 'Neutral',
+                                            data: streamAggSentimentData['neutral'],
+                                            borderColor: 'rgb(100, 100, 100)',
+                                            backgroundColor: 'rgb(100, 100, 100)',
+                                            fill: false,
+                                        },
+                                        {
+                                            label: 'Unknown',
+                                            data: streamAggSentimentData['unknown'],
+                                            borderColor: 'rgb(200, 200, 200)',
+                                            backgroundColor: 'rgb(200, 200, 200)',
+                                            fill: false,
+                                        },
+                                    ],
+                                    labels: ['T-08', 'T-07', 'T-06', 'T-05', 'T-04', 'T-03','T-02', 'T-01', 'Now']
                                 }}
                             />
                         </Grid.Column>
