@@ -10,12 +10,54 @@ export default class LineChart extends Component {
 
     constructor(props) {
         super(props);
-        this.sentimentLabels = ['Positive', 'Negative', 'Neutral', 'Unknown'];
+        this.sentimentLabels = ['positive', 'negative', 'neutral', 'unknown'];
+        this.sentimentColors = {
+            positive: 'rgb(000, 150, 000)',
+            negative: 'rgb(150, 000, 000)',
+            neutral:  'rgb(100, 100, 100)',
+            unknown:  'rgb(200, 200, 200)',
+        }
+    }
+
+
+    static capitalizeString(string) {
+        return string[0].toUpperCase() + string.slice(1);
+    }
+
+
+    buildDatasetsList(aggregatedData) {
+        let datasets = [];
+
+        this.sentimentLabels.forEach((label) => {
+            let labelSet = {
+                label: LineChart.capitalizeString(label),
+                data: aggregatedData[label],
+                borderColor: this.sentimentColors[label],
+                backgroundColor: this.sentimentColors[label],
+                fill: false,
+            };
+            datasets.push(labelSet);
+        });
+
+        return datasets;
+    }
+
+
+    buildLabelsList(bufferSize) {
+        let labels = [];
+
+        for (let i = bufferSize-1; i > 0; i--) {
+            const labelText = "T-" + i.toString();
+            labels.push(labelText);
+        }
+
+        labels.push('Now');
+        return labels;
     }
 
 
     render() {
-        const { streamAggSentimentData } = this.props;
+        const {streamAggSentimentData, streamAggBufferSize } = this.props;
 
         return (
             <Segment padded>
@@ -26,37 +68,8 @@ export default class LineChart extends Component {
                                 width={400}
                                 height={250}
                                 data={{
-                                    datasets: [
-                                        {
-                                            label: 'Positive',
-                                            data: streamAggSentimentData['positive'],
-                                            borderColor: 'rgb(000, 150, 000)',
-                                            backgroundColor: 'rgb(000, 150, 000)',
-                                            fill: false,
-                                        },
-                                        {
-                                            label: 'Negative',
-                                            data: streamAggSentimentData['negative'],
-                                            borderColor: 'rgb(150, 000, 000)',
-                                            backgroundColor: 'rgb(150, 000, 000)',
-                                            fill: false,
-                                        },
-                                        {
-                                            label: 'Neutral',
-                                            data: streamAggSentimentData['neutral'],
-                                            borderColor: 'rgb(100, 100, 100)',
-                                            backgroundColor: 'rgb(100, 100, 100)',
-                                            fill: false,
-                                        },
-                                        {
-                                            label: 'Unknown',
-                                            data: streamAggSentimentData['unknown'],
-                                            borderColor: 'rgb(200, 200, 200)',
-                                            backgroundColor: 'rgb(200, 200, 200)',
-                                            fill: false,
-                                        },
-                                    ],
-                                    labels: ['T-08', 'T-07', 'T-06', 'T-05', 'T-04', 'T-03','T-02', 'T-01', 'Now']
+                                    datasets: this.buildDatasetsList(streamAggSentimentData),
+                                    labels: this.buildLabelsList(streamAggBufferSize),
                                 }}
                             />
                         </Grid.Column>

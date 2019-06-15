@@ -11,6 +11,27 @@ export default class PieChart extends Component {
     constructor(props) {
         super(props);
         this.sourceLabels = ['Android', 'iPhone', 'Web', 'Other'];
+        this.sourceColors = [
+            'rgb(000, 150, 000)',
+            'rgb(200, 200, 200)',
+            'rgb(000, 150, 200)',
+            'rgb(100, 100, 100)',
+        ]
+    }
+
+
+    buildDatasetsList(aggregatedData) {
+        return [
+            {
+                data: aggregatedData,
+                backgroundColor: this.sourceColors,
+            }
+        ];
+    }
+
+
+    buildLabelsList() {
+        return this.sourceLabels;
     }
 
 
@@ -26,16 +47,8 @@ export default class PieChart extends Component {
                                 width={400}
                                 height={250}
                                 data={{
-                                    datasets: [{
-                                        data: streamAggSourceData,
-                                        backgroundColor: [
-                                            'rgb(000, 150, 000)',
-                                            'rgb(200, 200, 200)',
-                                            'rgb(000, 150, 200)',
-                                            'rgb(100, 100, 100)',
-                                        ]
-                                    }],
-                                    labels: this.sourceLabels,
+                                    datasets: this.buildDatasetsList(streamAggSourceData),
+                                    labels: this.buildLabelsList(),
                                 }}
                             />
                         </Grid.Column>
