@@ -158,7 +158,9 @@ class StreamPanel extends Component {
             streamData.shift();
         }
 
-        streamData = [...streamData, JSON.parse(tweet)];
+        let parsedTweet = JSON.parse(tweet);
+        streamData.push(parsedTweet);
+
         return streamData;
     }
 
@@ -215,7 +217,7 @@ class StreamPanel extends Component {
             if (prevCounters.length === this.state.streamAggBufferSize) {
                 prevCounters.shift();
             }
-            allCounters[sentiment] = [...prevCounters, newCounter]
+            allCounters[sentiment] = [...prevCounters, newCounter];
         });
 
         return allCounters
