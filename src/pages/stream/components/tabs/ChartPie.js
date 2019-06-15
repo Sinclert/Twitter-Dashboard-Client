@@ -14,35 +14,8 @@ export default class PieChart extends Component {
     }
 
 
-    countBySource(data, source) {
-        let occurrences = 0;
-
-        data.forEach((tweet) => {
-            let label = tweet.source.toLowerCase();
-            let src   = source.toLowerCase();
-            if (label === src) {
-                occurrences++;
-            }
-        });
-
-        return occurrences;
-    }
-
-
-    computeCounter(data) {
-        let newCounter = [];
-
-        this.sourceLabels.forEach((source) => {
-            let occurrences = this.countBySource(data, source);
-            newCounter.push(occurrences);
-        });
-
-        return newCounter;
-    }
-
-
     render() {
-        const { streamData } = this.props;
+        const { streamAggSourceData } = this.props;
 
         return (
             <Segment padded>
@@ -54,7 +27,7 @@ export default class PieChart extends Component {
                                 height={250}
                                 data={{
                                     datasets: [{
-                                        data: this.computeCounter(streamData),
+                                        data: streamAggSourceData,
                                         backgroundColor: [
                                             'rgb(000, 150, 000)',
                                             'rgb(200, 200, 200)',
