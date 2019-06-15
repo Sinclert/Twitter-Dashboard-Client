@@ -9,8 +9,8 @@ import "leaflet/dist/leaflet.css";
 const labelColors = {
     'positive': 'green',
     'negative': 'red',
-    'neutral': 'gray',
-    'unknown': 'white'
+    'neutral':  'gray',
+    'unknown':  'white',
 };
 
 

@@ -12,6 +12,21 @@ import LineChart from "./tabs/ChartLine";
 import PieChart from "./tabs/ChartPie";
 
 
+const defaultStreamProps = {
+    filterWord: "",
+    location:   "",
+    numResults: 20,
+};
+
+const defaultStreamData = [];
+const defaultStreamSourceData = [0, 0, 0, 0];
+const defaultStreamSentimentData = {
+    positive: [0],
+    negative: [0],
+    neutral:  [0],
+    unknown:  [0],
+};
+
 
 class StreamPanel extends Component {
 
@@ -22,20 +37,11 @@ class StreamPanel extends Component {
             chosenTab: "map",
             streamSocket: io(socketURL),
             streamStarted: false,
-            streamProps: {
-                filterWord: "",
-                location:   "",
-                numResults: 20,
-            },
-            streamData: [],
-            streamAggHistory: 10,
-            streamAggSourceData: [0, 0, 0, 0],
-            streamAggSentimentData: {
-                positive: [0],
-                negative: [0],
-                neutral:  [0],
-                unknown:  [0],
-            },
+            streamProps: defaultStreamProps,
+            streamData: defaultStreamData,
+            streamAggBufferSize: 10,
+            streamAggSourceData: defaultStreamSourceData,
+            streamAggSentimentData: defaultStreamSentimentData,
         };
 
         // Stream source filters
@@ -63,6 +69,7 @@ class StreamPanel extends Component {
             case "line":
                 return <LineChart
                     streamAggSentimentData={this.state.streamAggSentimentData}
+                    streamAggBufferSize={this.state.streamAggBufferSize}
                 />;
             case "pie":
                 return <PieChart
@@ -106,34 +113,39 @@ class StreamPanel extends Component {
     }
 
 
-    setStreamProps(word, location, results) {
+    resetStreamState() {
         this.setState({
+            streamStarted: false,
+            streamProps: defaultStreamProps,
+            streamData: defaultStreamData,
+            streamAggSourceData: defaultStreamSourceData,
+            streamAggSentimentData: defaultStreamSentimentData,
+        });
+    }
+
+
+    setStreamState(word, location, results) {
+        this.setState({
+            streamStarted: true,
             streamProps: {
                 filterWord: word,
-                location: location,
-                numResults: results
-            }
+                location:   location,
+                numResults: results,
+            },
         });
     }
 
 
     startStream(filterWord, location, maxResults) {
-        this.setStreamProps(filterWord, location, maxResults);
-
         fetch(startURL, this.buildRequest())
-            .then(() => this.setState({ streamStarted: true }))
+            .then(() => this.setStreamState(filterWord, location, maxResults))
             .catch(err => console.log(err))
     }
 
 
     stopStream() {
-        this.setStreamProps("", "", 20);
-
         fetch(stopURL, this.buildRequest())
-            .then(() => this.setState({
-                streamStarted: false,
-                streamData: []
-            }))
+            .then(() => this.resetStreamState())
             .catch(err => console.log(err));
     }
 
@@ -200,7 +212,7 @@ class StreamPanel extends Component {
             const prevCounters = this.state.streamAggSentimentData[sentiment];
             const newCounter = this.countBySentiment(data, sentiment);
 
-            if (prevCounters.length === this.state.streamAggHistory) {
+            if (prevCounters.length === this.state.streamAggBufferSize) {
                 prevCounters.shift();
             }
             allCounters[sentiment] = [...prevCounters, newCounter]
