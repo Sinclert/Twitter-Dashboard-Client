@@ -5,8 +5,8 @@ import { Button, Dropdown, Icon, Image, Input, Menu, Segment } from "semantic-ui
 
 
 const options = [
-    {text: '20', value: 20},
-    {text: '50', value: 50},
+    {text: '20',  value: 20},
+    {text: '50',  value: 50},
     {text: '100', value: 100},
     {text: '200', value: 200},
 ];
@@ -30,11 +30,11 @@ export default class StreamDetails extends Component {
 
 
     startStream() {
-        this.props.startStream(
-            this.state.unsavedStreamFilterWord,
-            this.state.unsavedStreamLocation,
-            this.state.unsavedStreamMaxResults
-        );
+        this.props.startStream({
+            filterWord: this.state.unsavedStreamFilterWord,
+            location:   this.state.unsavedStreamLocation,
+            maxResults: this.state.unsavedStreamMaxResults,
+        });
     }
 
 

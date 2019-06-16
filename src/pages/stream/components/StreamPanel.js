@@ -15,7 +15,7 @@ import PieChart from "./tabs/ChartPie";
 const defaultStreamProps = {
     filterWord: "",
     location:   "",
-    numResults: 20,
+    maxResults: 20,
 };
 
 const defaultStreamData = [];
@@ -99,7 +99,7 @@ class StreamPanel extends Component {
     }
 
 
-    buildRequest() {
+    buildRequest(additionalData = {}) {
         const { cookies } = this.props;
         const account = cookies.get("twitter_account");
         const token = cookies.get("twitter_token");
@@ -107,7 +107,8 @@ class StreamPanel extends Component {
         let customConfig = requestConfig;
         customConfig.body = JSON.stringify({
             twitter_account: account,
-            twitter_token: token
+            twitter_token: token,
+            ...additionalData,
         });
         return customConfig;
     }
@@ -124,21 +125,17 @@ class StreamPanel extends Component {
     }
 
 
-    setStreamState(word, location, results) {
+    setStreamState(newStreamProps) {
         this.setState({
             streamStarted: true,
-            streamProps: {
-                filterWord: word,
-                location:   location,
-                numResults: results,
-            },
+            streamProps: newStreamProps,
         });
     }
 
 
-    startStream(filterWord, location, maxResults) {
-        fetch(startURL, this.buildRequest())
-            .then(() => this.setStreamState(filterWord, location, maxResults))
+    startStream(streamProps) {
+        fetch(startURL, this.buildRequest(streamProps))
+            .then(() => this.setStreamState(streamProps))
             .catch(err => console.log(err))
     }
 
@@ -151,7 +148,7 @@ class StreamPanel extends Component {
 
 
     updateStreamData(tweet) {
-        let maxResults = this.state.streamProps.numResults;
+        let maxResults = this.state.streamProps.maxResults;
         let streamData = this.state.streamData;
 
         if (streamData.length === maxResults) {
