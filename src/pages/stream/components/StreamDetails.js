@@ -81,7 +81,7 @@ export default class StreamDetails extends Component {
                             fluid
                             placeholder="San Francisco..."
                             size="small"
-                            onChange={event => this.updateUnsavedFilter(event)}
+                            onChange={event => this.updateUnsavedLocation(event)}
                         />
                     </Menu.Item>
 
@@ -96,7 +96,7 @@ export default class StreamDetails extends Component {
                             fluid
                             placeholder="Golden Gate..."
                             size="small"
-                            onChange={event => this.updateUnsavedLocation(event)}
+                            onChange={event => this.updateUnsavedFilter(event)}
                         />
                     </Menu.Item>
 
